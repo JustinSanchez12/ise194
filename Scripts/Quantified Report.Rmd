@@ -1,0 +1,60 @@
+---
+title: "Quantified Report"
+author: "Justin Sanchez"
+date: "4/14/2021"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Objective
+
+**Question:** How well is my performance when playing videogames? How does that translate to how much fun I am having?
+
+**Overview:** 
+  I like to spend majority of my free time playing videogames. During the semester I would mainly play during the weekend since I am busy throughout the week, but during breaks I would play throughout the entire week.I recorded various factors with the first being the games I was playing, which are Street Fighter and Valorant. The second factor is time. This factor has 2 levels with the first level being from 12-5 PM and 9-12 AM. These are common times that I would play. The factor would be how much joy I have playing, which would be on a scale from 1-10. The fourth and fifth factor will measure number of wins and losses I get.
+
+  My main source for recording the data is Microsoft Excel. I would usually insert each value manually whenever I would play. The second source of recording is through the games itself. Both games keep records of games played, wins, losses, and personal stats. The last source would be through the website Twitch.tv[https://www.twitch.tv/originalsunchips]. I would sometimes stream my games and if I forgot to record the data on the spreadsheet I can replay my games on my stream. 
+
+```{r}
+library(tidyverse)
+indata <- read.csv("DataReport1.csv")
+is.data.frame(indata)
+
+is.data.frame(indata)
+is_tibble(indata)
+
+indata_tibble <- as_tibble(indata)
+is_tibble(indata_tibble)
+
+indata_tibble
+summary(indata_tibble)
+
+```
+
+## Reflection
+
+Overall, I would say that the more fun I play a game, the better my performance is. This can be more relevant with Street Fighter because this game is a 1 vs 1 so my wins and losses can directly be related to my performance. Valorant is a 5 vs 5 team based game, so even though I would lose that doesn't necessarily mean my performance is bad. This can be why my joy factor can be high even though my losses are more than my wins. The last two weeks I played more at night so if I were to redo this analysis again, I would have to change the first level of time since I felt like I barely played during those times and the scores that had "0" was because I didn't play at the time. I would note that there were other factors that I didn't mention or record, which would've affected my performance and joy. When I would play there would be times where I didn't eat, hydrate, or was getting fatigued for playing too long.  
+
+```{r pressure, echo=FALSE}
+library(ggplot2)
+ggplot(data= indata_tibble, mapping=aes(x= Wins, y = Joy)) + geom_boxplot() + coord_flip() +
+  labs(x = "Wins", y = "Joy", title = "Unemployment Rate Based on Major" , subtitle = "Relations Between Wins and Joy")
+
+ggplot(data= indata_tibble, mapping=aes(x= Time, y = Wins)) + geom_boxplot() + coord_flip() +
+  labs(x = "Time", y = "Wins", title = "Unemployment Rate Based on Major" , subtitle = "Relations Between Wins and Time")
+```
+
+Based on the data, I perform better at later times than earlier. Also, my wins is slightly related to how well I perform. However, is this significant?
+
+```{r}
+level1 <- indata[(indata_tibble$Wins), "Wins"]
+level2 <- indata[(indata_tibble$Joy), "Wins"]
+
+t.test(level1, level2, paired = FALSE)
+```
+The p-value is > 0.05, the difference between the two groups is not statistically significant.
